@@ -31,11 +31,12 @@ There can be two keys in the root object:
 
 Elements are defined as key-value pairs, where the key is a description of the element, and the value is a dictionary of specifiers defining the element and its processing. Allowed keys in the specifier dictionary are:
 
-- ***selector*** - an XPath selector targetting the element to be selected.
+- ***selector*** - an XPath selector targeting the element to be selected.
 - ***attribute*** - a string specifying the attribute to extract from the selected element. **Optional** (omitting this key is equivalent to giving it a value of `text`). In addition to html attributes there are two special attributes allowed:
     - `text` - extracts any plaintext inside the selected element
     - `html` - extracts the inner HTML of the selected element
-- ***download*** - a boolean flag: true if the element is a URL to a resource that must be downloaded. **Optional** (omitting this key is equivalent to giving it a value of `false`).
+- ***download*** - if present and has a truthey value (`true` or an Object) the element is treated as a URL to a resource and is downloaded. The key **Optional** (omitting this key is equivalent to giving it a value of `false`). If the value is an object, the following keys are allowed:
+    - `rename` - a string specifying the filename to which the downloaded file will be renamed.
 
 Example:
 ```json
@@ -45,7 +46,9 @@ Example:
     "fulltext_pdf": {
       "selector": "//meta[@name='citation_pdf_url']",
       "attribute": "content",
-      "download": true
+      "download": {
+        "rename": "fulltext.pdf"
+      }
     },
     "title": {
       "selector": "//meta[@name='citation_title']"
@@ -53,3 +56,7 @@ Example:
   }
 }
 ```
+
+### Changelog
+
+***0.0.1*** - add download renaming

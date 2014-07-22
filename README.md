@@ -35,8 +35,11 @@ Elements are defined as key-value pairs, where the key is a description of the e
 - ***attribute*** - a string specifying the attribute to extract from the selected element. **Optional** (omitting this key is equivalent to giving it a value of `text`). In addition to html attributes there are two special attributes allowed:
     - `text` - extracts any plaintext inside the selected element
     - `html` - extracts the inner HTML of the selected element
-- ***download*** - if present and has a truthey value (`true` or an Object) the element is treated as a URL to a resource and is downloaded. The key **Optional** (omitting this key is equivalent to giving it a value of `false`). If the value is an object, the following keys are allowed:
+- ***download*** - if present and has a truthey value (`true` or an Object) the element is treated as a URL to a resource and is downloaded. **Optional** (omitting this key is equivalent to giving it a value of `false`). If the value is an object, the following keys are allowed:
     - `rename` - a string specifying the filename to which the downloaded file will be renamed.
+- ***regex*** - an Object specifying a regular expression whose groups should be captured as the results. The results will be an array of the captured groups. If the global flag (`g`) is specified, the result will be an array of arrays of captured groups. There are two keys allowed:
+    - `source` - a string specifying the regular expression to be executed. **Required**
+    - `flags` - an array specifying the regex flags to be used (`g`, `m`, `i`, etc.). **Optional** (omitting this key will cause the regex to be executed with no flags).
 
 Example:
 ```json
@@ -46,6 +49,10 @@ Example:
     "fulltext_pdf": {
       "selector": "//meta[@name='citation_pdf_url']",
       "attribute": "content",
+      "regex": {
+        "flags": ["g", "m"],
+        "source": "(\\w+)"
+      },
       "download": {
         "rename": "fulltext.pdf"
       }
@@ -60,3 +67,4 @@ Example:
 ### Changelog
 
 ***0.0.1*** - add download renaming
+***0.0.2*** - add regex
